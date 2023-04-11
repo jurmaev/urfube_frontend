@@ -8,23 +8,27 @@ export default {
         return {
             v$: useValidate(),
             title: '',
-            description: '', 
-            file: null
+            description: '',
+            video: null
         }
     },
     methods: {
         async sendFormData() {
             this.v$.$validate();
             if (!this.v$.$error) {
-                // console.log(this.file)
-                // const response = await useFetch('upload_video', {
-                //     'video': {
-                //         'title': this.title,
-                //         'description': this.description
-                //     }
-                // }, { 'User-Auth-Token': getAccessToken() })
+                const formData = new FormData();
+                formData.append('file', this.video);
+                const response = await fetch('http://127.0.0.1:5000/upload_video/?' + new URLSearchParams({
+                    video_title: this.title,
+                    video_description: this.description,
+                }), {
+                    method: 'POST',
+                    body: formData,
+                    headers: { 'User-Auth-Token': getAccessToken() }
+                });
+                console.log(response);
                 if ('result' in response) {
-                    this.$router.push({ name: 'account' })
+                    this.$router.push({ name: 'main' })
                 }
                 else {
                     console.log(response['error'])
@@ -33,13 +37,14 @@ export default {
         },
         setFile() {
             const fileUpload = document.getElementById('file');
-            console.log(fileUpload.files[0].type)
+            this.video = fileUpload.files[0];
         }
     },
     validations() {
         return {
             title: { required, minLength: minLength(3) },
-            description: { required }
+            description: { required },
+            video: {}
         }
     },
 }
@@ -62,8 +67,12 @@ export default {
                 <textarea type="textarea" id="description" v-model.trim="description" class="form-control mb-2"
                     :class="{ 'is-invalid': v$.description.$error }"></textarea>
                 <label for="file">Select a file:</label>
-                <input type="file" id="file" name="file" accept=".mp4" @change="setFile">
-                <button @click.prevent="sendFormData" type="submit" class="btn btn-outline-info">Upload video</button>
+                <div v-for="(error, index) of v$.video.$errors" :key="index">
+                    <div class="text-danger mb-2"><span>{{ error.$message }}</span></div>
+                </div>
+                <input class="form-control mb-2" type="file" id="file" name="file" accept=".mp4" @change="setFile"
+                    :class="{ 'is-invalid': v$.video.$error }">
+                <button @click="sendFormData" type="submit" class="btn btn-outline-info">Upload video</button>
             </div>
 
         </form>

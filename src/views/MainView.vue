@@ -1,5 +1,6 @@
 <script>
-import { useFetch } from '../assets/fetch.js'
+import { useFetch } from '../assets/fetch.js';
+import { RouterLink, RouterView } from 'vue-router';
 export default {
     data() {
         return {
@@ -21,16 +22,13 @@ export default {
     <div v-if="!videos"></div>
     <div v-else class="container p-4" v-for="video in videos" :key="video['key']">
         <div class="card col">
-            <a href="">
-                <!-- <img src="" class="card-img-top" alt="..."> -->
+            <RouterLink :to="{ name: 'video', params: { id: video['id'] } }">
                 <div class="card-body">
                     <h5 class="card-title">{{ video['title'] }}</h5>
-                    <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                        content.</p> -->
-                    <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
                     <p class="card-text">{{ video['author'] }}</p>
                 </div>
-            </a>
+            </RouterLink>
+
 
         </div>
     </div>
@@ -46,7 +44,7 @@ export default {
     background-color: grey;
 }
 
-a{
+a {
     color: inherit;
     text-decoration: none;
 }
