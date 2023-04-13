@@ -33,7 +33,8 @@ const router = createRouter({
     {
       path: '/video/:id',
       name: 'video',
-      component: VideoView
+      component: VideoView,
+      props: route => ({ title: route.query.title,  description: route.query.description, author: route.query.author})
     }
   ]
 })

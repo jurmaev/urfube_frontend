@@ -15,7 +15,3 @@ export function removeTokens() {
     localStorage.removeItem('access-token');
     localStorage.removeItem('refresh-token');
 }
-
-export function isAuthenticated() {
-    return localStorage.getItem('access-token') !== null && localStorage.getItem('refresh-token') !== null;
-}

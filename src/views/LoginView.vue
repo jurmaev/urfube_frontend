@@ -2,7 +2,9 @@
 import useValidate from '@vuelidate/core'
 import { required, minLength } from '@vuelidate/validators'
 import { useFetch } from '../assets/fetch';
-import { saveTokens } from '../assets/tokens'
+import { saveTokens } from '../assets/tokens';
+import { mapStores } from 'pinia';
+import { useUserStore } from '../store/user';
 
 export default {
     data() {
@@ -25,7 +27,7 @@ export default {
                 })
                 if ('result' in response) {
                     saveTokens(response['result']['access_token'], response['result']['refresh_token']);
-                    this.$emit('getUsername', this.username)
+                    this.userStore.loginUser(this.username);
                     this.$router.push({ name: 'account' })
                 }
                 else {
@@ -41,7 +43,9 @@ export default {
             password: { required }
         }
     },
-    emits: ['getUsername']
+    computed: {
+        ...mapStores(useUserStore)
+    }
 }
 </script>
 <template>

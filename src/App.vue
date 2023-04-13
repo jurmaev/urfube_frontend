@@ -3,23 +3,18 @@ import { RouterLink, RouterView } from 'vue-router'
 import HeaderComponent from '../src/components/HeaderComponent.vue'
 
 </script>
-<script>
+<!-- <script>
 export default {
   data() {
-    return {
-     username: '' 
-    }
+
   },
   methods: {
-    logUser(username) {
-      this.username = username
-    }
   }
 }
-</script>
+</script> -->
 <template>
-  <HeaderComponent  />
-  <RouterView  />
+  <HeaderComponent />
+  <RouterView />
 </template>
 
 <style scoped></style>

@@ -1,6 +1,8 @@
 <script>
-import { RouterLink, RouterView } from 'vue-router';
-import { removeTokens, isAuthenticated } from '../assets/tokens'
+import { RouterLink } from 'vue-router';
+import { removeTokens } from '../assets/tokens';
+import { mapStores } from 'pinia';
+import { useUserStore } from '../store/user';
 
 export default {
     data() {
@@ -8,13 +10,12 @@ export default {
         }
     },
     computed: {
-        isAuthenticated() {
-            return isAuthenticated();
-        }
+        ...mapStores(useUserStore)
     },
     methods: {
         logout() {
             removeTokens();
+            this.userStore.logoutUser();
             this.$router.push({ name: 'main' })
         }
     }
@@ -36,9 +37,9 @@ export default {
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
                 <ul class="navbar-nav mb-2 mb-lg-0">
-                    <template v-if="isAuthenticated">
+                    <template v-if="userStore.username">
                         <li class="nav-item">
-                            <RouterLink class="nav-link" :to="{ name: 'account'}">Account</RouterLink>
+                            <RouterLink class="nav-link" :to="{ name: 'account'}">{{ userStore.username }}</RouterLink>
                         </li>
                         <li @click="logout" class="nav-item">
                             <RouterLink class="nav-link" :to="{ name: 'main' }">Logout</RouterLink>
