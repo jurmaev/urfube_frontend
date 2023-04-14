@@ -1,4 +1,5 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
+import { useUserStore } from '../store/user';
 // import HomeView from '../views/HomeView.vue'
 const MainView = () => import('../views/MainView.vue');
 const LoginView = () => import('../views/LoginView.vue');
@@ -18,23 +19,41 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      component: LoginView
+      component: LoginView,
+      beforeEnter: (to, from) => {
+        const store = useUserStore();
+        if (store.username) {
+          router.push({ name: from.name })
+        }
+      }
     },
     {
-      path: '/register', 
+      path: '/register',
       name: 'register',
-      component: RegisterView
+      component: RegisterView,
+      beforeEnter: (to, from) => {
+        const store = useUserStore();
+        if (store.username) {
+          router.push({ name: from.name })
+        }
+      }
     },
     {
-      path: '/account', 
-      name: 'account', 
-      component: AccountView
+      path: '/account',
+      name: 'account',
+      component: AccountView,
+      beforeEnter: (to, from) => {
+        const store = useUserStore();
+        if (!store.username) {
+          router.push({ name: 'login' })
+        }
+      }
     },
     {
       path: '/video/:id',
       name: 'video',
       component: VideoView,
-      props: route => ({ title: route.query.title,  description: route.query.description, author: route.query.author})
+      props: route => ({ title: route.query.title, description: route.query.description, author: route.query.author })
     }
   ]
 })
