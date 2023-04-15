@@ -21,7 +21,7 @@ export default {
 <template>
     <div v-if="!videos"></div>
     <div v-else class="container p-4" v-for="video in videos" :key="video['key']">
-        <div class="card col card__link">
+        <div class="card col card__link bg-dark border-light">
             <RouterLink :to="{
                 name: 'video', params: { id: video['id'] }, query: {
                     title: video['title'], description: video['description'],
@@ -37,14 +37,15 @@ export default {
     </div>
 </template>
 
-<style>
+<style scoped>
 .card__link {
     cursor: pointer;
     transition: all 0.4s ease-in-out;
+    color: white;
 }
 
 .card__link:hover {
-    box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;
+    box-shadow: 0 5px 15px rgba(3, 102, 214, 0.3);
 }
 
 a {

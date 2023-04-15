@@ -1,6 +1,5 @@
 import { defineStore, createPinia } from 'pinia';
 import { watch } from 'vue';
-// console.log(localStorage.getItem('user'))
 const username = localStorage.getItem('username');
 const initialState = username ? username : null;
 export const useUserStore = defineStore('user', {
@@ -9,9 +8,6 @@ export const useUserStore = defineStore('user', {
             username: initialState
         }
     },
-    // getters: {
-    //     isLogged: (state) => state.username === '',
-    // },
     actions: {
         loginUser(username) {
             this.username = username;

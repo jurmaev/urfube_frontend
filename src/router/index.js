@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useUserStore } from '../store/user';
-// import HomeView from '../views/HomeView.vue'
 const MainView = () => import('../views/MainView.vue');
 const LoginView = () => import('../views/LoginView.vue');
 const RegisterView = () => import('../views/RegisterView.vue');
@@ -53,7 +52,7 @@ const router = createRouter({
       path: '/video/:id',
       name: 'video',
       component: VideoView,
-      props: route => ({ title: route.query.title, description: route.query.description, author: route.query.author })
+      props: route => ({ id: route.params.id, title: route.query.title, description: route.query.description, author: route.query.author })
     }
   ]
 })
