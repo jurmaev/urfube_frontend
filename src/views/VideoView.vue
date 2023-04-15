@@ -9,7 +9,7 @@ export default {
     data() {
         return {
             videoOptions: {
-                autoplay: true,
+                autoplay: false,
                 controls: true,
                 sources: [
                     {
@@ -24,6 +24,7 @@ export default {
     async mounted() {
         const response = await useFetch('generate_link', { video_id: this.id });
         this.videoOptions.sources[0].src = response['result'];
+        console.log(this.videoOptions.sources)
         this.videoReady = true;
     },
     props: ['id', 'title', 'description', 'author']
@@ -31,22 +32,17 @@ export default {
 </script>
 
 <template>
-    <div class="container p-3" v-if="videoReady">
-        <VideoPlayer :options="videoOptions" />
-    </div>
-    <div v-else class="spinner-border">
-
-    </div>
-    <div class="container p-3">
-        <div class="card p-3 bg-dark border-light">
-            <h2 class="card-title">{{ title }}</h2>
-            <p class="card-text">{{ description }}</p>
-            <span>{{ author }}</span>
+    <div class="container p-3" data-bs-theme="dark">
+        <VideoPlayer v-if="videoReady" :options="videoOptions" />
+        <h2 class="text-body">{{ title }}</h2>
+        <p class="text-body">{{ author }}</p>
+        <div class="p-2 border rounded">
+            <p class="text-body">{{ description }}</p>
         </div>
     </div>
 </template>
 <style scoped>
-.card{
+.card {
     color: white;
 }
 </style>

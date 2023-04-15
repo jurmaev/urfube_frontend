@@ -8,8 +8,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.7",
     "@vuelidate/core": "^2.0.2",
     "@vuelidate/validators": "^2.0.2",
+    "bootstrap": "^5.3.0-alpha3",
     "pinia": "^2.0.34",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6"

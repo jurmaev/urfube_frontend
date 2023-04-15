@@ -52,28 +52,36 @@ export default {
     <div class="container-fluid">
         <h1>Upload video</h1>
         <form>
-            <div class="container-sm shadow p-5">
-                <label for="title" class="mb-2 text-light">Title </label>
+            <div class="container-sm shadow p-5" data-bs-theme="dark">
                 <div v-for="(error, index) of v$.title.$errors" :key="index">
                     <div class="text-danger mb-2"><span>{{ error.$message }}</span></div>
                 </div>
-                <input type="text" id="title" v-model.trim="title" class="form-control mb-2 bg-dark text-light"
-                    :class="{ 'is-invalid': v$.title.$error }" />
-                <label for="description" class="mb-2 text-light">Description </label>
+                <div class="form-floating">
+                    <input type="text" id="title" v-model.trim="title" class="form-control mb-2 "
+                        :class="{ 'is-invalid': v$.title.$error }" placeholder="title" />
+                    <label for="title" class="mb-2 ">Title</label>
+                </div>
                 <div v-for="(error, index) of v$.description.$errors" :key="index">
                     <div class="text-danger mb-2"><span>{{ error.$message }}</span></div>
                 </div>
-                <textarea type="textarea" id="description" v-model.trim="description" class="form-control mb-2 bg-dark text-light"
-                    :class="{ 'is-invalid': v$.description.$error }"></textarea>
-                <label class="text-light mb-2" for="file">Select a file:</label>
+                <div class="form-floating">
+                    <textarea type="textarea" id="description" v-model.trim="description" class="form-control mb-2 "
+                        :class="{ 'is-invalid': v$.description.$error }" placeholder="description"></textarea>
+                    <label for="description" class="mb-2 ">Description </label>
+                </div>
+                <!-- <label class=" mb-2" for="file">Select a file:</label> -->
                 <div v-for="(error, index) of v$.video.$errors" :key="index">
                     <div class="text-danger mb-2"><span>{{ error.$message }}</span></div>
                 </div>
-                <input class="form-control mb-2 bg-dark text-light" type="file" id="file" name="file" accept=".mp4" @change="setFile"
-                    :class="{ 'is-invalid': v$.video.$error }">
-                <button @click.prevent="sendFormData" type="submit" class="btn btn-outline-info">Upload video</button>
+                <!-- <input class="form-control mb-2 " type="file" id="file" name="file" accept=".mp4" @change="setFile"
+                    :class="{ 'is-invalid': v$.video.$error }"> -->
+                <div class="input-group mb-2">
+                    <input type="file" class="form-control" aria-describedby="files" aria-label="Upload" id="file"
+                        name="file" accept=".mp4" @change="setFile" :class="{ 'is-invalid': v$.video.$error }">
+                    <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04" @click="sendFormData">Upload</button>
+                </div>
+                <!-- <button @click.prevent="sendFormData" type="submit" class="btn btn-outline-info">Upload video</button> -->
             </div>
-
         </form>
     </div>
 </template>

@@ -1,9 +1,11 @@
 <template>
-    <div>
-        <video ref="videoPlayer" class="video-js"></video>
-    </div>
+    <video ref="videoPlayer" class="vjs-matrix video-js"></video>
 </template>
-  
+<style scoped>
+.vjs-matrix {
+    width: 100%;
+}
+</style>
 <script>
 import videojs from 'video.js';
 
