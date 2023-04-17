@@ -1,8 +1,8 @@
 <script>
 import useValidate from '@vuelidate/core'
 import { required, minLength } from '@vuelidate/validators'
-import { useFetch } from '../assets/fetch';
-import { getAccessToken } from '../assets/tokens';
+import { useFetch, refreshTokens } from '../assets/fetch';
+import { getAccessToken, getAccessTokenExpirationTime } from '../assets/tokens';
 export default {
     data() {
         return {
@@ -18,6 +18,7 @@ export default {
             if (!this.v$.$error) {
                 const formData = new FormData();
                 formData.append('file', this.video);
+                if (new Date() > getAccessTokenExpirationTime()) refreshTokens();
                 const response = await fetch('http://127.0.0.1:5000/upload_video/?' + new URLSearchParams({
                     video_title: this.title,
                     video_description: this.description,
@@ -49,10 +50,10 @@ export default {
 }
 </script>
 <template>
-    <div class="container-fluid">
-        <h1>Upload video</h1>
+    <div class="container-fluid p-3">
+        <h1 class="mb-3 text-center">Upload video</h1>
         <form>
-            <div class="container-sm shadow p-5" data-bs-theme="dark">
+            <div class="shadow" data-bs-theme="dark">
                 <div v-for="(error, index) of v$.title.$errors" :key="index">
                     <div class="text-danger mb-2"><span>{{ error.$message }}</span></div>
                 </div>
@@ -69,19 +70,21 @@ export default {
                         :class="{ 'is-invalid': v$.description.$error }" placeholder="description"></textarea>
                     <label for="description" class="mb-2 ">Description </label>
                 </div>
-                <!-- <label class=" mb-2" for="file">Select a file:</label> -->
                 <div v-for="(error, index) of v$.video.$errors" :key="index">
                     <div class="text-danger mb-2"><span>{{ error.$message }}</span></div>
                 </div>
-                <!-- <input class="form-control mb-2 " type="file" id="file" name="file" accept=".mp4" @change="setFile"
-                    :class="{ 'is-invalid': v$.video.$error }"> -->
                 <div class="input-group mb-2">
                     <input type="file" class="form-control" aria-describedby="files" aria-label="Upload" id="file"
                         name="file" accept=".mp4" @change="setFile" :class="{ 'is-invalid': v$.video.$error }">
-                    <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04" @click="sendFormData">Upload</button>
+                    <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04"
+                        @click="sendFormData">Upload</button>
                 </div>
-                <!-- <button @click.prevent="sendFormData" type="submit" class="btn btn-outline-info">Upload video</button> -->
             </div>
         </form>
     </div>
 </template>
+<style scoped>
+.container-fluid {
+    max-width: 800px;
+}
+</style>

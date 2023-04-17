@@ -14,7 +14,7 @@ export default {
 </script> -->
 <template>
   <HeaderComponent />
-  <main class="bg-black" style="margin-top: 55px;">
+  <main style="margin-top: 55px;">
     <RouterView />
   </main>
   
