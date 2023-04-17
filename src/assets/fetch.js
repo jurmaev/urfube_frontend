@@ -4,9 +4,9 @@ export async function useFetch(method, data, useToken) {
     const headers = {};
     headers['Content-Type'] = 'application/json';
     if (useToken) {
-        const accessTokenExpirationTime = getAccessTokenExpirationTime();
+        const accessTokenExpirationTime = Date.parse(getAccessTokenExpirationTime());
         if (new Date() > accessTokenExpirationTime)
-            refreshTokens();
+            await refreshTokens();
         headers['User-Auth-Token'] = getAccessToken();
     };
     const response = await fetch('http://127.0.0.1:5000/api', {
@@ -22,16 +22,16 @@ export async function useFetch(method, data, useToken) {
     return response
 };
 
-async function refreshTokens() {
+export async function refreshTokens() {
     const response = await fetch('http://127.0.0.1:5000/api', {
         method: 'POST',
         body: JSON.stringify({
             jsonrpc: '2.0',
-            method: 'refreshTokens',
-            params: { 'refreshToken': getRefreshToken() },
+            method: 'refresh_tokens',
+            params: { 'refresh_token': getRefreshToken() },
             id: 0
         })
-    });
+    }).then(response => response.json());
     saveTokens(response['result']['access_token'], response['result']['refresh_token']);
 }
 

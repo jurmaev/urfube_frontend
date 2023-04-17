@@ -2,6 +2,8 @@
 import VideoPlayer from '../components/VideoPlayer.vue';
 import { useFetch } from '../assets/fetch';
 import { getAccessToken } from '../assets/tokens';
+import { mapStores } from 'pinia';
+import { useUserStore } from '../store/user';
 export default {
     name: 'VideoExample',
     components: {
@@ -53,6 +55,7 @@ export default {
             this.comment = '';
         },
         async publishComment() {
+            if (this.comment === '') return;
             const response = await useFetch('add_comment', {
                 'comment': {
                     'content': this.comment,
@@ -74,7 +77,16 @@ export default {
                 if ('result' in response) this.$router.go();
                 else console.log(response);
             }
+        },
+        async deleteComment(event) {
+            const commentId = event.target.id;
+            const response = await useFetch('delete_comment', { comment_id: commentId }, true);
+            if ('result' in response) this.$router.go();
+            else console.log(response);
         }
+    },
+    computed: {
+        ...mapStores(useUserStore)
     }
 }
 </script>
@@ -107,9 +119,24 @@ export default {
                     <button class='btn btn-dark' @click='publishComment'>Comment</button>
                 </div>
             </div>
-            <div class='border rounded p-2 mb-2' v-for='comment in comments' :key='comment.id'>
+            <div id="comment" class='border rounded p-2 mb-2' v-for='comment in comments' :key='comment.id'
+                style="position: relative;">
                 <p class='text-body'>{{ comment.author }}</p>
                 <p class='text-body m-0'>{{ comment.content }}</p>
+                <div class="dropdown">
+                    <button v-if="userStore.username == comment.author" class="options__btn rounded-circle dropdown-toggle"
+                        type="button" data-bs-toggle="dropdown" aria-expanded="false"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                            <path
+                                d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                        </svg></button>
+                    <ul class="dropdown-menu">
+                        <li><button class="dropdown-item" href="#" :id="comment.id">Edit</button></li>
+                        <li><button @click="deleteComment" class="dropdown-item" href="#" :id="comment.id">Delete</button>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -127,5 +154,25 @@ export default {
 .btn__like:hover {
     color: white;
     background-color: #3e3e3e;
+}
+
+.options__btn {
+    display: none;
+    background-color: transparent;
+    border: none;
+}
+
+#comment:hover .options__btn {
+    display: inline-block;
+}
+
+.dropdown {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+.dropdown-toggle::after {
+    display: none;
 }
 </style>

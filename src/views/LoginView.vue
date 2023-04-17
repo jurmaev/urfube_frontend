@@ -31,7 +31,6 @@ export default {
                     saveTokens(response['result']['access_token'], response['result']['refresh_token']);
                     this.userStore.loginUser(this.username);
                     const next = this.$router.currentRoute.value.query['next'];
-                    console.log(next)
                     if (next) { this.$router.push({ name: next }) }
                     else { this.$router.push({ name: 'account' }); }
                 }
