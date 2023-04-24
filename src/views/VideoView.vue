@@ -5,7 +5,7 @@ import { getAccessToken } from '../assets/tokens';
 import { mapStores } from 'pinia';
 import { useUserStore } from '../store/user';
 export default {
-    name: 'VideoExample',
+    name: 'VideoView',
     components: {
         VideoPlayer
     },
@@ -37,19 +37,19 @@ export default {
     },
     async mounted() {
         const infoResponse = await useFetch('get_video_info', { video_id: this.id });
-        this.video = infoResponse['result'];
+        this.video = infoResponse.result;
         const linkResponse = await useFetch('generate_link', { video_id: this.id });
-        this.videoOptions.sources[0].src = linkResponse['result'];
+        this.videoOptions.sources[0].src = linkResponse.result;
         this.videoReady = true;
         const commentResponse = await useFetch('get_comments', { video_id: this.id });
-        this.comments = commentResponse['result'];
+        this.comments = commentResponse.result;
         const likesResponse = await useFetch('get_likes', { video_id: this.id });
-        this.likes = likesResponse['result'];
+        this.likes = likesResponse.result;
         const likedResponse = await useFetch('get_like', { video_id: this.id }, true);
-        this.liked = likedResponse['result'];
+        this.liked = likedResponse.result;
 
     },
-    props: ['id'],
+    props: ['id', 'timestamp'],
     methods: {
         cancelComment() {
             this.comment = '';
@@ -93,7 +93,9 @@ export default {
 
 <template>
     <div class='container p-3' data-bs-theme='dark'>
-        <VideoPlayer v-if='videoReady' :options='videoOptions' />
+        <VideoPlayer v-if='videoReady' :options='videoOptions'
+            :video="{ title: this.video.title, description: this.video.description, author: this.video.author, id: this.video.id }"
+            :timestamp="this.timestamp" />
         <h2 class='text-body'>{{ this.video.title }}</h2>
         <div class="d-flex flex-row align-items-center mb-2">
             <p class='text-body m-0 me-auto'>{{ this.video.author }}</p>

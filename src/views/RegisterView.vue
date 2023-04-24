@@ -26,11 +26,12 @@ export default {
                     }
                 });
                 if ('error' in response) {
-                    if (response['error']['code'] === 1000)
-                        this.errorMessage = response['error']['message'];
+                    if (response.error.code === 1000)
+                        this.errorMessage = response.error.message;
                     else
-                        console.log(response['error']);
+                        console.log(response.error);
                 }
+                else this.$router.push({ name: 'login' });
             }
         }
     },

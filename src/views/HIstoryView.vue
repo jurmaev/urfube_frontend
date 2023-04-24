@@ -4,26 +4,27 @@ import { RouterLink, RouterView } from 'vue-router';
 export default {
     data() {
         return {
-            videos: null
+            history: null
         }
     },
     methods: {
-        async getVideos() {
-            const response = await useFetch('get_videos', {})
-            this.videos = response.result;
+        async getHistory() {
+            const response = await useFetch('get_user_history', {}, true)
+            this.history = response.result;
         }
     },
     mounted() {
-        this.getVideos();
+        this.getHistory();
     }
 }
 </script>
+
 <template>
-    <div v-if="!videos"></div>
-    <div v-else class="container p-4" v-for="video in videos" :key="video.id">
+    <div v-if="!history"></div>
+    <div v-else class="container p-4" v-for="video in history" :key="video.video_id">
         <div class="card col card__link bg-dark border-secondary">
             <RouterLink :to="{
-                name: 'video', params: { id: video.id }
+                name: 'video', params: { id: video.video_id }, query: { timestamp: video.timestamp }
             }">
                 <div class="card-body">
                     <h5 class="card-title">{{ video.title }}</h5>

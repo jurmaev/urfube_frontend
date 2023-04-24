@@ -8,6 +8,9 @@
 </style>
 <script>
 import videojs from 'video.js';
+import { useFetch } from '../assets/fetch';
+import { integer } from '@vuelidate/validators';
+import { useUserStore } from '../store/user';
 
 export default {
     name: 'VideoPlayer',
@@ -17,6 +20,12 @@ export default {
             default() {
                 return {};
             }
+        },
+        video: {
+            title: String,
+            description: String,
+            author: String,
+            id: Number
         }
     },
     data() {
@@ -25,12 +34,27 @@ export default {
         }
     },
     mounted() {
+        const timestamp = this.$router.currentRoute.value.query.timestamp;
         this.player = videojs(this.$refs.videoPlayer, this.options, () => {
             this.player.log('onPlayerReady', this);
         });
+        if (timestamp) this.player.currentTime(timestamp);
     },
-    beforeDestroy() {
+    beforeUnmount() {
         if (this.player) {
+            const store = useUserStore();
+            if (store.username) {
+                useFetch('add_or_update_history', {
+                    "video": {
+                        "title":
+                            this.video.title,
+                        "description": this.video.description,
+                        "author": this.video.author,
+                        "video_id": this.video.id,
+                        "timestamp": this.player.currentTime()
+                    }
+                }, true);
+            }
             this.player.dispose();
         }
     }
