@@ -45,13 +45,9 @@ export default {
             const store = useUserStore();
             if (store.username) {
                 useFetch('add_or_update_history', {
-                    "video": {
-                        "title":
-                            this.video.title,
-                        "description": this.video.description,
-                        "author": this.video.author,
-                        "video_id": this.video.id,
-                        "timestamp": this.player.currentTime()
+                    'video': {
+                        'video_id': this.video.id,
+                        'timestamp': this.player.currentTime()
                     }
                 }, true);
             }
