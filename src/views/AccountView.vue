@@ -17,7 +17,7 @@ export default {
             this.v$.$validate();
             if (!this.v$.$error) {
                 const formData = new FormData();
-                formData.append('file', this.video);
+                formData.append('upload_file', this.video, 'upload_file');
                 if (new Date() > getAccessTokenExpirationTime()) refreshTokens();
                 const response = await fetch('http://127.0.0.1:5000/upload_video/?' + new URLSearchParams({
                     video_title: this.title,
@@ -86,5 +86,9 @@ export default {
 <style scoped>
 .container-fluid {
     max-width: 800px;
+}
+
+label {
+    color: #adb5bd;
 }
 </style>

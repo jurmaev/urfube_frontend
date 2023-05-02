@@ -95,4 +95,8 @@ export default {
     max-width: 550px;
     padding: 15px;
 }
+
+label {
+    color: #adb5bd;
+}
 </style>

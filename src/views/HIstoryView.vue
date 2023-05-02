@@ -21,16 +21,20 @@ export default {
 
 <template>
     <div v-if="!history"></div>
-    <div v-else class="container p-4" v-for="video in history" :key="video.video_id">
-        <div class="card col card__link bg-dark border-secondary">
-            <RouterLink :to="{
-                name: 'video', params: { id: video.video_id }, query: { timestamp: video.timestamp }
-            }">
-                <div class="card-body">
-                    <h5 class="card-title">{{ video.title }}</h5>
-                    <p class="card-text">{{ video.author }}</p>
+    <div v-else class="container p-4">
+        <div class="row row-cols-3 g-4">
+            <div class="col" v-for="video in history" :key="video.id">
+                <div class="card card__link bg-dark border-secondary">
+                    <RouterLink :to="{
+                            name: 'video', params: { id: video.video_id }, query: { timestamp: video.timestamp }
+                        }">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ video.title }}</h5>
+                            <p class="card-text">{{ video.author }}</p>
+                        </div>
+                    </RouterLink>
                 </div>
-            </RouterLink>
+            </div>
         </div>
     </div>
 </template>

@@ -89,5 +89,8 @@ export default {
     padding: 15px;
 }
 
-/* .form-floating > label { z-index: 3; } */
-</style>
+label {
+    color: #adb5bd;
+}
+
+/* .form-floating > label { z-index: 3; } */</style>
