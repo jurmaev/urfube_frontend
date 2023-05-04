@@ -11,6 +11,7 @@ export default {
         async getVideos() {
             const response = await useFetch('get_videos', {})
             this.videos = response.result;
+            console.log(response.result)
         }
     },
     mounted() {
@@ -27,6 +28,7 @@ export default {
                     <RouterLink :to="{
                             name: 'video', params: { id: video.id }
                         }">
+                        <img :src="video.image_link" class="card-img-top">
                         <div class="card-body">
                             <h5 class="card-title">{{ video.title }}</h5>
                             <p class="card-text">{{ video.author }}</p>

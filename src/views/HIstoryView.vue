@@ -28,6 +28,7 @@ export default {
                     <RouterLink :to="{
                             name: 'video', params: { id: video.video_id }, query: { timestamp: video.timestamp }
                         }">
+                        <img :src="video.image_link" class="card-img-top">
                         <div class="card-body">
                             <h5 class="card-title">{{ video.title }}</h5>
                             <p class="card-text">{{ video.author }}</p>

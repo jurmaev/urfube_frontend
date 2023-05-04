@@ -18,7 +18,7 @@ export default {
             if (!this.v$.$error) {
                 const formData = new FormData();
                 formData.append('upload_file', this.video, 'upload_file');
-                if (new Date() > getAccessTokenExpirationTime()) refreshTokens();
+                if (new Date() > new Date(getAccessTokenExpirationTime())) await refreshTokens();
                 const response = await fetch('http://127.0.0.1:5000/upload_video/?' + new URLSearchParams({
                     video_title: this.title,
                     video_description: this.description,

@@ -38,7 +38,7 @@ export default {
     async mounted() {
         const infoResponse = await useFetch('get_video_info', { video_id: this.id });
         this.video = infoResponse.result;
-        const linkResponse = await useFetch('generate_link', { video_id: this.id });
+        const linkResponse = await useFetch('generate_video_link', { video_id: this.id });
         this.videoOptions.sources[0].src = linkResponse.result;
         this.videoReady = true;
         const commentResponse = await useFetch('get_comments', { video_id: this.id });
