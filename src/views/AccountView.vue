@@ -9,15 +9,19 @@ export default {
             v$: useValidate(),
             title: '',
             description: '',
-            video: null
+            video: null,
+            image: null
         }
     },
     methods: {
         async sendFormData() {
             this.v$.$validate();
             if (!this.v$.$error) {
+                const videoUpload = document.getElementById('videoFile').files[0];
+                const imageUpload = document.getElementById('imageFile').files[0];
                 const formData = new FormData();
-                formData.append('upload_file', this.video, 'upload_file');
+                formData.append('video_file', videoUpload, 'video_file');
+                formData.append('image_file', imageUpload, 'image_file');
                 if (new Date() > new Date(getAccessTokenExpirationTime())) await refreshTokens();
                 const response = await fetch('http://127.0.0.1:5000/upload_video/?' + new URLSearchParams({
                     video_title: this.title,
@@ -27,7 +31,7 @@ export default {
                     body: formData,
                     headers: { 'User-Auth-Token': getAccessToken() }
                 });
-                if ('result' in response) {
+                if (!('error' in response)) {
                     this.$router.push({ name: 'main' })
                 }
                 else {
@@ -35,16 +39,23 @@ export default {
                 }
             }
         },
-        setFile() {
-            const fileUpload = document.getElementById('file');
+        changeVideo() {
+            const fileUpload = document.getElementById('videoFile');
             this.video = fileUpload.files[0];
+            console.log(fname.slice((fname.lastIndexOf(".") - 1 >>> 0) + 2))
+        }
+        ,
+        changeImage() {
+            const fileUpload = document.getElementById('imageFile');
+            this.image = fileUpload.files[0];
         }
     },
     validations() {
         return {
             title: { required, minLength: minLength(3) },
             description: { required },
-            video: {}
+            video: { required },
+            image: { required }
         }
     },
 }
@@ -74,8 +85,12 @@ export default {
                     <div class="text-danger mb-2"><span>{{ error.$message }}</span></div>
                 </div>
                 <div class="input-group mb-2">
-                    <input type="file" class="form-control" aria-describedby="files" aria-label="Upload" id="file"
-                        name="file" accept=".mp4" @change="setFile" :class="{ 'is-invalid': v$.video.$error }">
+                    <input type="file" class="form-control" aria-describedby="files" aria-label="Video upload"
+                        @change="changeVideo" id="videoFile" name="videoFile" accept=".mp4"
+                        :class="{ 'is-invalid': v$.video.$error }">
+                    <input type="file" class="form-control" aria-describedby="files" aria-label="Image upload"
+                        @change="changeImage" id="imageFile" name="imageFile" accept=".jpg"
+                        :class="{ 'is-invalid': v$.image.$error }">
                     <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04"
                         @click="sendFormData">Upload</button>
                 </div>
