@@ -21,9 +21,13 @@ export default {
             <div class="col" v-for="video in liked_videos" :key="video.id">
                 <div class="card card__link bg-dark border-secondary">
                     <RouterLink :to="{
-                            name: 'video', params: { id: video.video_id }, query: { timestamp: video.timestamp }
-                        }">
+                        name: 'video', params: { id: video.video_id }, query: { timestamp: video.timestamp }
+                    }">
                         <img :src="video.image_link" class="card-img-top">
+                        <div class="progress" role="progressbar" aria-label="Example 1px high" aria-valuenow="25"
+                            aria-valuemin="0" aria-valuemax="100" style="height: 3px">
+                            <div class="progress-bar" :style="{ 'width': video.progress * 100 + '%' }"></div>
+                        </div>
                         <div class="card-body">
                             <h5 class="card-title">{{ video.title }}</h5>
                             <p class="card-text">{{ video.author }}</p>

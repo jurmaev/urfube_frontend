@@ -47,7 +47,8 @@ export default {
                 useFetch('add_or_update_history', {
                     'video': {
                         'video_id': this.video.id,
-                        'timestamp': this.player.currentTime()
+                        'timestamp': this.player.currentTime(),
+                        'length': this.player.duration()
                     }
                 }, true);
             }
