@@ -83,6 +83,39 @@ export default {
             const response = await useFetch('delete_comment', { comment_id: commentId }, true);
             if ('result' in response) this.$router.go();
             else console.log(response);
+        },
+        editComment(event) {
+            const commentId = event.target.id;
+            const content = document.querySelector(`p#content${commentId}`);
+            content.style.display = 'none';
+            const editComment = document.querySelector(`div#edit${commentId}`);
+            editComment.style.display = 'block';
+            const commentText = document.querySelector(`#text${commentId}`);
+            commentText.innerHTML = content.innerHTML;
+        },
+        cancelEdit(event) {
+            const commentId = event.target.id;
+            const content = document.querySelector(`p#content${commentId}`);
+            content.style.display = 'block';
+            const editComment = document.querySelector(`div#edit${commentId}`);
+            editComment.style.display = 'none';
+        },
+        async sendEdit(event) {
+            const commentId = event.target.id;
+            const commentText = document.querySelector(`#text${commentId}`);
+            console.log(commentText.value)
+            const response = await useFetch('edit_comment', {
+                'comment_id': commentId,
+                'new_content': commentText.value
+            }, true);
+            const content = document.querySelector(`p#content${commentId}`);
+            if ('result' in response)
+                content.innerHTML = commentText.value;
+            else
+                console.log(response);
+            content.style.display = 'block';
+            const editComment = document.querySelector(`div#edit${commentId}`);
+            editComment.style.display = 'none';
         }
     },
     computed: {
@@ -124,7 +157,15 @@ export default {
             <div id="comment" class='border rounded p-2 mb-2' v-for='comment in comments' :key='comment.id'
                 style="position: relative;">
                 <p class='text-body'>{{ comment.author }}</p>
-                <p class='text-body m-0'>{{ comment.content }}</p>
+                <p class='text-body m-0' :id="'content' + comment.id">{{ comment.content }}</p>
+                <div style="display: none;" :id="'edit' + comment.id">
+                    <textarea class='form-control mb-2 text-body' placeholder='Add comment...'
+                        :id="'text' + comment.id"></textarea>
+                    <div class='mb-2'>
+                        <button class='btn btn-danger me-2' @click='cancelEdit' :id="comment.id">Cancel</button>
+                        <button class='btn btn-dark' @click='sendEdit' :id="comment.id">Edit</button>
+                    </div>
+                </div>
                 <div class="dropdown">
                     <button v-if="userStore.username == comment.author" class="options__btn rounded-circle dropdown-toggle"
                         type="button" data-bs-toggle="dropdown" aria-expanded="false"><svg
@@ -134,7 +175,7 @@ export default {
                                 d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
                         </svg></button>
                     <ul class="dropdown-menu">
-                        <li><button class="dropdown-item" href="#" :id="comment.id">Edit</button></li>
+                        <li><button @click="editComment" class="dropdown-item" href="#" :id="comment.id">Edit</button></li>
                         <li><button @click="deleteComment" class="dropdown-item" href="#" :id="comment.id">Delete</button>
                         </li>
                     </ul>
