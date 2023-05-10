@@ -32,7 +32,9 @@ export default {
                 user_id: null
             },
             likes: 0,
-            liked: false
+            liked: false,
+            subscribed: false,
+            subscribers: 0
         };
     },
     async mounted() {
@@ -47,7 +49,10 @@ export default {
         this.likes = likesResponse.result;
         const likedResponse = await useFetch('get_like', { video_id: this.id }, true);
         this.liked = likedResponse.result;
-
+        const subscriptionResponse = await useFetch('is_subscribed', { channel: this.video.author }, true);
+        this.subscribed = subscriptionResponse.result;
+        const subscribersResponse = await useFetch('get_subscribers', { channel: this.video.author }, true);
+        this.subscribers = subscribersResponse.result;
     },
     props: ['id', 'timestamp'],
     methods: {
@@ -122,6 +127,21 @@ export default {
             content.style.display = 'block';
             const editComment = document.querySelector(`div#edit${commentId}`);
             editComment.style.display = 'none';
+        },
+        async toggleSubscription() {
+            if (this.subscribed) {
+                const response = await useFetch('unsubscribe', { channel: this.video.author }, true);
+                if ('result' in response)
+                    this.subscribed = false;
+                else
+                    console.log(response);
+            } else {
+                const response = await useFetch('subscribe', { channel: this.video.author }, true);
+                if ('result' in response)
+                    this.subscribed = true;
+                else
+                    console.log(response);
+            }
         }
     },
     computed: {
@@ -137,7 +157,16 @@ export default {
             :timestamp="this.timestamp" />
         <h2 class='text-body'>{{ this.video.title }}</h2>
         <div class="d-flex flex-row align-items-center mb-2">
-            <p class='text-body m-0 me-auto'>{{ this.video.author }}</p>
+            <div class="d-flex align-items-center me-auto">
+                <div class="me-4">
+                    <p class='text-body m-0'>{{ this.video.author }}</p>
+                    <p class='text-body m-0' style="font-size: .7rem;">{{ this.subscribers }} {{ this.subscribers % 10 != 1 ? 'subscribers' :
+                        'subscriber' }}</p>
+                </div>
+                <button v-if="!this.subscribed" class="btn btn-light rounded-pill"
+                    @click="toggleSubscription">Subscribe</button>
+                <button v-else class="btn btn-secondary rounded-pill" @click="toggleSubscription">Unsubscribe</button>
+            </div>
             <button id="likeBtn" @click="toggleLike"
                 class="btn d-flex flex-row align-items-center rounded-pill btn__like"><svg
                     xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
