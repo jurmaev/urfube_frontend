@@ -35,7 +35,8 @@ export default {
                         </div>
                         <div class="card-body">
                             <h5 class="card-title">{{ video.title }}</h5>
-                            <p class="card-text">{{ video.author }}</p>
+                            <p class="card-text" style="margin-bottom: 0;">{{ video.author }}</p>
+                            <p class="card-text">{{ video.views }} {{ video.views % 10 != 1 ? 'views' : 'view' }}</p>
                         </div>
                     </RouterLink>
                 </div>

@@ -70,11 +70,17 @@ export default {
         async toggleLike() {
             if (!this.liked) {
                 const response = await useFetch('post_like', { video_id: this.id }, true);
-                if ('result' in response) this.$router.go();
+                if ('result' in response) {
+                    this.liked = true;
+                    this.likes++;
+                }
                 else console.log(response);
             } else {
                 const response = await useFetch('remove_like', { video_id: this.id }, true);
-                if ('result' in response) this.$router.go();
+                if ('result' in response) {
+                    this.liked = false;
+                    this.likes--;
+                }
                 else console.log(response);
             }
         },
@@ -143,6 +149,7 @@ export default {
                 </svg>{{ this.likes }}</button>
         </div>
         <div class='p-2 border rounded bg-secondary mb-2'>
+            <p class="text-light m-0">{{ this.video.views }} {{ this.video.views % 10 != 1 ? 'views' : 'view' }}</p>
             <p class='text-light m-0'>{{ this.video.description }}</p>
         </div>
         <div v-if='comments'>

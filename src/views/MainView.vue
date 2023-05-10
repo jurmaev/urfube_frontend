@@ -26,17 +26,17 @@ export default {
             <div class="col" v-for="video in videos" :key="video.id">
                 <div class="card card__link bg-dark border-secondary">
                     <RouterLink :to="{
-                            name: 'video', params: { id: video.id }
-                        }">
+                        name: 'video', params: { id: video.id }
+                    }">
                         <img :src="video.image_link" class="card-img-top">
                         <div class="card-body">
                             <h5 class="card-title">{{ video.title }}</h5>
-                            <p class="card-text">{{ video.author }}</p>
+                            <p class="card-text" style="margin-bottom: 0;">{{ video.author }}</p>
+                            <p class="card-text">{{ video.views }} {{ video.views % 10 != 1 ? 'views' : 'view' }}</p>
                         </div>
                     </RouterLink>
                 </div>
             </div>
-
         </div>
     </div>
 </template>

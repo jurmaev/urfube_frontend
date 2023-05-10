@@ -51,6 +51,9 @@ export default {
                         'length': this.player.duration()
                     }
                 }, true);
+                useFetch('post_view', {
+                    'video_id': this.video.id
+                }, true);
             }
             this.player.dispose();
         }
