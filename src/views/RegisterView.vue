@@ -7,7 +7,7 @@ export default {
         return {
             v$: useValidate(),
             username: '',
-            email: '',
+            // email: '',
             password: {
                 password: '',
                 confirm: ''
@@ -21,7 +21,7 @@ export default {
             if (!this.v$.$error) {
                 const response = await useFetch('signup', {
                     'user': {
-                        'username': this.username, 'email': this.email,
+                        'username': this.username, 
                         'password': this.password.password
                     }
                 });
@@ -38,7 +38,7 @@ export default {
     validations() {
         return {
             username: { required, minLength: minLength(3) },
-            email: { required, email },
+            // email: { required, email },
             password: {
                 password: { required, minLength: minLength(6) },
                 confirm: { required, minLength: minLength(6), sameAs: sameAs(this.password.password) }
@@ -60,14 +60,14 @@ export default {
                         :class="{ 'is-invalid': v$.username.$error }" placeholder="username" />
                     <label for="username" class="mb-2">Username </label>
                 </div>
-                <div v-for="(error, index) of v$.email.$errors" :key="index">
+                <!-- <div v-for="(error, index) of v$.email.$errors" :key="index">
                     <div class="text-danger mb-2"><span>{{ error.$message }}</span></div>
                 </div>
                 <div class="form-floating">
                     <input type="text" id="email" v-model.trim="email" class="form-control mb-2"
                         :class="{ 'is-invalid': v$.email.$error }" placeholder="email" />
                     <label for="email" class="mb-2">Email </label>
-                </div>
+                </div> -->
                 <div v-for="(error, index) of v$.password.password.$errors" :key="index">
                     <div class="text-danger mb-2"><span>{{ error.$message }}</span></div>
                 </div>

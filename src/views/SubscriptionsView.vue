@@ -5,21 +5,21 @@ import Videos from '../components/Videos.vue';
 export default {
     data() {
         return {
-            history: null
+            videos: null
         }
     },
     methods: {
-        async getHistory() {
-            const response = await useFetch('get_user_history', {}, true)
-            this.history = response.result;
+        async getSubscriptions() {
+            const response = await useFetch('get_subscription_videos', {}, true)
+            this.videos = response.result;
         }, formatDate, formatViews
     },
     mounted() {
-        this.getHistory();
+        this.getSubscriptions();
     }, components: { Videos }
 }
 </script>
 
 <template>
-    <Videos :videos="this.history" />
+    <Videos :videos="this.videos" />
 </template>

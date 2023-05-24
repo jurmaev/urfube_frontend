@@ -22,27 +22,38 @@ export default {
                 const formData = new FormData();
                 formData.append('video_file', videoUpload, 'video_file');
                 formData.append('image_file', imageUpload, 'image_file');
-                if (new Date() > new Date(getAccessTokenExpirationTime())) await refreshTokens();
-                const response = await fetch('http://127.0.0.1:5000/upload_video/?' + new URLSearchParams({
+                const request = new XMLHttpRequest();
+                const progress = document.querySelector('.progress');
+                const progressBar = document.querySelector('.progress-bar');
+                progress.style.display = 'flex';
+
+                request.upload.addEventListener('progress', function (e) {
+                    if (e.loaded <= e.total) {
+                        var percent = Math.round(e.loaded / e.total * 100);
+                        progressBar.style.width = percent + '%';
+                    }
+
+                    if (e.loaded == e.total) {
+                        progressBar.style.width = '100%';
+                        location.reload();
+                    }
+                });
+
+                request.onreadystatechange = function () {
+                    console.log(request.responseText)
+                }
+
+                request.open('post', 'http://127.0.0.1:5000/upload_video/?' + new URLSearchParams({
                     video_title: this.title,
                     video_description: this.description,
-                }), {
-                    method: 'POST',
-                    body: formData,
-                    headers: { 'User-Auth-Token': getAccessToken() }
-                });
-                if (!('error' in response)) {
-                    this.$router.push({ name: 'main' })
-                }
-                else {
-                    console.log(response['error'])
-                }
+                }));
+                request.setRequestHeader('User-Auth-Token', getAccessToken())
+                request.send(formData);
             }
         },
         changeVideo() {
             const fileUpload = document.getElementById('videoFile');
             this.video = fileUpload.files[0];
-            // console.log(fname.slice((fname.lastIndexOf(".") - 1 >>> 0) + 2))
         }
         ,
         changeImage() {
@@ -62,7 +73,6 @@ export default {
 </script>
 <template>
     <div class="container-fluid p-3">
-        <!-- <h1 class="mb-3 text-center text-light">Upload video</h1> -->
         <form>
             <div class="shadow" data-bs-theme="dark">
                 <div v-for="(error, index) of v$.title.$errors" :key="index">
@@ -96,6 +106,9 @@ export default {
                 </div>
             </div>
         </form>
+        <div class="progress" role="progressbar" style="display: none;">
+            <div class="progress-bar progress-bar-striped progress-bar-animated"></div>
+        </div>
     </div>
 </template>
 <style scoped>

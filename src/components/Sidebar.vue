@@ -27,6 +27,7 @@ export default {
             <li class="nav-item"><RouterLink @click="closeSidebar" class="nav-link text-white" :to="{ name: 'main' }">Home</RouterLink></li>
             <li class="nav-item"><RouterLink @click="closeSidebar" class="nav-link text-white" :to="{ name: 'history' }">History</RouterLink></li>
             <li class="nav-item"><RouterLink @click="closeSidebar" class="nav-link text-white" :to="{ name: 'liked_videos' }">Liked videos</RouterLink></li>
+            <li class="nav-item"><RouterLink @click="closeSidebar" class="nav-link text-white" :to="{ name: 'subscriptions' }">Subscriptions</RouterLink></li>
         </ul>
     </div>
 </template>

@@ -13,18 +13,34 @@ export default {
     },
     data() {
         return {
-            view: '',
+            view: 'videos',
             subscribers: 0,
             videosCount: 0,
             profileImage: '',
-            videos: null
+            videos: null,
+            subscribed: false
         }
     },
     methods: {
         changeView(e) {
             this.view = e.target.id;
             e.target.classList.add('active');
-        }, formatViews, formatDate
+        }, formatViews, formatDate,
+        async toggleSubscription() {
+            if (this.subscribed) {
+                const response = await useFetch('unsubscribe', { channel: this.channel }, true);
+                if ('result' in response)
+                    this.subscribed = false;
+                else
+                    console.log(response);
+            } else {
+                const response = await useFetch('subscribe', { channel: this.channel }, true);
+                if ('result' in response)
+                    this.subscribed = true;
+                else
+                    console.log(response);
+            }
+        }
     },
     props: ['channel'],
     async mounted() {
@@ -37,37 +53,49 @@ export default {
         } else {
             console.log(response);
         }
+        const subscriptionResponse = await useFetch('is_subscribed', { channel: this.channel }, true);
+        this.subscribed = subscriptionResponse.result;
         const videoResponse = await useFetch('get_channel_videos', { channel: this.channel });
         if ('result' in videoResponse) this.videos = videoResponse.result;
         else console.log(videoResponse);
     },
     computed: {
         ...mapStores(useUserStore)
-    }, beforeUnmount(){
+    }, beforeUnmount() {
         document.title = 'Urfube';
     }
 }
 </script>
 <template>
-    <Spinner v-if="!profileImage" />
+    <Spinner v-if="!videos" />
     <div v-else>
         <div class="d-flex container-fluid p-4" style="max-width: 800px;">
             <img :src="this.profileImage" class="profile__pic me-3">
-            <div>
-                <h1 class="text-secondary">{{ this.channel }}</h1>
-                <p class="text-secondary">{{ formatViews(this.subscribers).replace('view', 'subscriber') }}</p>
-                <p class="text-secondary">{{ formatViews(this.videosCount).replace('view', 'video') }}</p>
+            <div class="d-flex justify-content-between w-100">
+                <div>
+                    <h1 class="text-secondary">{{ this.channel }}</h1>
+                    <p class="text-secondary">{{ formatViews(this.subscribers).replace('view', 'subscriber') }}</p>
+                    <p class="text-secondary">{{ formatViews(this.videosCount).replace('view', 'video') }}</p>
+                </div>
+                <button v-if="!this.subscribed" class="btn btn-light rounded-pill align-self-start"
+                    @click="toggleSubscription">Subscribe</button>
+                <button v-else class="btn btn-secondary rounded-pill align-self-start"
+                    @click="toggleSubscription">Unsubscribe</button>
             </div>
+
         </div>
         <ul v-if="channel === userStore.username" class="nav nav-underline justify-content-center" data-bs-theme="dark">
             <li class="nav-item">
-                <a class="nav-link text-secondary" @click="changeView" href="#" id="videos">Videos</a>
+                <a class="nav-link text-secondary" :class="view === 'videos' ? 'active' : ''" @click="changeView" href="#"
+                    id="videos">Videos</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-secondary" @click="changeView" href="#" id="upload">Upload Video</a>
+                <a class="nav-link text-secondary" :class="view === 'upload' ? 'active' : ''" @click="changeView" href="#"
+                    id="upload">Upload Video</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-secondary" @click="changeView" href="#" id="update">Update profile picture</a>
+                <a class="nav-link text-secondary" :class="view === 'update' ? 'active' : ''" @click="changeView" href="#"
+                    id="update">Update profile picture</a>
             </li>
         </ul>
         <VideoUpload v-if="view === 'upload'" />

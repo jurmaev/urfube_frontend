@@ -193,7 +193,8 @@ export default {
             <p class='text-light m-0'>{{ this.video.description }}</p>
         </div>
         <div v-if='comments'>
-            <p class='text-body'>{{ this.comments.length }} Comments</p>
+            <p class='text-body'>{{ this.comments.length }} {{ this.comments.length % 10 === 1 && this.comments.length !==
+                11 ? 'Comment' : 'Comments' }}</p>
             <div>
                 <textarea v-model='comment' class='form-control mb-2 text-body' placeholder='Add comment...'></textarea>
                 <div class='mb-2'>
@@ -203,8 +204,14 @@ export default {
             </div>
             <div id="comment" class='border rounded p-2 mb-2' v-for='comment in comments' :key='comment.id'
                 style="position: relative;">
-                <p class='text-body'>{{ comment.author }}</p>
-                <p class='text-body m-0' :id="'content' + comment.id">{{ comment.content }}</p>
+                <div class="d-flex">
+                    <img :src="comment.profile_link" class="profile__pic me-3">
+                    <div>
+                        <p class='text-body'>{{ comment.author }} <span class="comment__date text-secondary">{{
+                            formatDate(comment.created) }}</span></p>
+                        <p class='text-body m-0' :id="'content' + comment.id">{{ comment.content }}</p>
+                    </div>
+                </div>
                 <div style="display: none;" :id="'edit' + comment.id">
                     <textarea class='form-control mb-2 text-body' placeholder='Add comment...'
                         :id="'text' + comment.id"></textarea>
@@ -273,5 +280,15 @@ a.text-body {
 
 a.text-body:hover {
     color: white !important;
+}
+
+.comment__date {
+    font-size: .8rem;
+}
+
+.profile__pic {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
 }
 </style>

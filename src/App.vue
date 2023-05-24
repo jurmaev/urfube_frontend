@@ -1,7 +1,6 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import HeaderComponent from '../src/components/HeaderComponent.vue'
-import Sidebar from './components/Sidebar.vue';
 
 </script>
 <!-- <script>
@@ -16,7 +15,7 @@ export default {
 <template>
   <HeaderComponent />
   <!-- <Sidebar /> -->
-  <main style="margin-top: 55px;">
+  <main style="margin-top: 65px;">
     <RouterView />
   </main>
   
