@@ -4,10 +4,13 @@ import { useFetch } from '../assets/fetch';
 import { getAccessToken } from '../assets/tokens';
 import { mapStores } from 'pinia';
 import { useUserStore } from '../store/user';
+import { formatDate, formatExactDate } from '../assets/formatters.js';
+import Spinner from '../components/Spinner.vue';
+
 export default {
     name: 'VideoView',
     components: {
-        VideoPlayer
+        VideoPlayer, Spinner
     },
     data() {
         return {
@@ -34,7 +37,8 @@ export default {
             likes: 0,
             liked: false,
             subscribed: false,
-            subscribers: 0
+            subscribers: 0,
+            isReady: false
         };
     },
     async mounted() {
@@ -53,6 +57,8 @@ export default {
         this.subscribed = subscriptionResponse.result;
         const subscribersResponse = await useFetch('get_subscribers', { channel: this.video.author }, true);
         this.subscribers = subscribersResponse.result;
+        document.title = this.video.title;
+        this.isReady = true;
     },
     props: ['id', 'timestamp'],
     methods: {
@@ -142,16 +148,17 @@ export default {
                 else
                     console.log(response);
             }
-        }
+        }, formatDate, formatExactDate
     },
     computed: {
         ...mapStores(useUserStore)
-    }
+    }, beforeUnmount() { document.title = 'Urfube'; }
 }
 </script>
 
 <template>
-    <div class='container p-3' data-bs-theme='dark'>
+    <Spinner v-if="!isReady" />
+    <div v-else class='container p-3' data-bs-theme='dark'>
         <VideoPlayer v-if='videoReady' :options='videoOptions'
             :video="{ title: this.video.title, description: this.video.description, author: this.video.author, id: this.video.id }"
             :timestamp="this.timestamp" />
@@ -159,8 +166,11 @@ export default {
         <div class="d-flex flex-row align-items-center mb-2">
             <div class="d-flex align-items-center me-auto">
                 <div class="me-4">
-                    <p class='text-body m-0'>{{ this.video.author }}</p>
-                    <p class='text-body m-0' style="font-size: .7rem;">{{ this.subscribers }} {{ this.subscribers % 10 != 1 ? 'subscribers' :
+                    <RouterLink v-if="this.video.user_id" class="text-body"
+                        :to="{ name: 'account', params: { channel: this.video.author } }">{{
+                            this.video.author }}</RouterLink>
+                    <p class='text-body m-0' style="font-size: .7rem;">{{ this.subscribers }} {{ this.subscribers % 10 != 1
+                        ? 'subscribers' :
                         'subscriber' }}</p>
                 </div>
                 <button v-if="!this.subscribed" class="btn btn-light rounded-pill"
@@ -178,7 +188,8 @@ export default {
                 </svg>{{ this.likes }}</button>
         </div>
         <div class='p-2 border rounded bg-secondary mb-2'>
-            <p class="text-light m-0">{{ this.video.views }} {{ this.video.views % 10 != 1 ? 'views' : 'view' }}</p>
+            <p class="text-light m-0">{{ this.video.views }} {{ this.video.views % 10 != 1 ? 'views' : 'view' }} {{
+                formatExactDate(this.video.created) }}</p>
             <p class='text-light m-0'>{{ this.video.description }}</p>
         </div>
         <div v-if='comments'>
@@ -253,5 +264,14 @@ export default {
 
 .dropdown-toggle::after {
     display: none;
+}
+
+a.text-body {
+    text-decoration: none;
+    transition: color 0.5s ease-in-out;
+}
+
+a.text-body:hover {
+    color: white !important;
 }
 </style>

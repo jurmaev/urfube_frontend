@@ -32,7 +32,7 @@ export default {
                     this.userStore.loginUser(this.username);
                     const next = this.$router.currentRoute.value.query['next'];
                     if (next) { this.$router.push({ name: next }) }
-                    else { this.$router.push({ name: 'account' }); }
+                    else { this.$router.push({ name: 'account', params: { channel: this.username } }); }
                 }
                 else {
                     if (response['error']['code'] === 1001)
@@ -93,4 +93,5 @@ label {
     color: #adb5bd;
 }
 
-/* .form-floating > label { z-index: 3; } */</style>
+/* .form-floating > label { z-index: 3; } */
+</style>

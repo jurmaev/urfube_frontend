@@ -7,24 +7,26 @@ export default {
     },
     props: ['active'],
     methods: {
-        setActive(e){
-            const links = document.querySelectorAll('.nav-link.text-white');
-            links.forEach(link => link.classList.remove('active'))
-            e.target.classList.add('active');
+        closeSidebar(e){
+            const sidebar = document.querySelector('.sidenav');
+            sidebar.classList.remove('active');
+            // const links = document.querySelectorAll('.nav-link.text-white');
+            // links.forEach(link => link.classList.remove('active'))
+            // e.target.classList.add('active');
         }
     },
     mounted(){
         const links = document.querySelectorAll('.nav-link.text-white');
-        if (this.$router.currentRoute.value.path === '/') links[0].classList.add('active');
+        // if (this.$router.currentRoute.value.path === '/') links[0].classList.add('active');
     }
 }
 </script>
 <template>
     <div class="d-flex flex-column flex-shrink-0 text-bg-dark sidenav" :class="{active: active}">
         <ul class="nav nav-pills flex-column mb-auto">
-            <li class="nav-item"><RouterLink @click="setActive" class="nav-link text-white" :to="{ name: 'main' }">Home</RouterLink></li>
-            <li class="nav-item"><RouterLink @click="setActive" class="nav-link text-white" :to="{ name: 'history' }">History</RouterLink></li>
-            <li class="nav-item"><RouterLink @click="setActive" class="nav-link text-white" :to="{ name: 'liked_videos' }">Liked videos</RouterLink></li>
+            <li class="nav-item"><RouterLink @click="closeSidebar" class="nav-link text-white" :to="{ name: 'main' }">Home</RouterLink></li>
+            <li class="nav-item"><RouterLink @click="closeSidebar" class="nav-link text-white" :to="{ name: 'history' }">History</RouterLink></li>
+            <li class="nav-item"><RouterLink @click="closeSidebar" class="nav-link text-white" :to="{ name: 'liked_videos' }">Liked videos</RouterLink></li>
         </ul>
     </div>
 </template>

@@ -54,7 +54,7 @@ export default {
                 <ul class="navbar-nav mb-2 mb-lg-0">
                     <template v-if="userStore.username">
                         <li class="nav-item">
-                            <RouterLink class="nav-link" :to="{ name: 'account' }">{{ userStore.username }}</RouterLink>
+                            <RouterLink class="nav-link" :to="{ name: 'account', params: { channel: userStore.username } }">{{ userStore.username }}</RouterLink>
                         </li>
                         <li @click="logout" class="nav-item">
                             <RouterLink class="nav-link" :to="{ name: 'main' }">Logout</RouterLink>

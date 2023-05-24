@@ -40,15 +40,10 @@ const router = createRouter({
       }
     },
     {
-      path: '/account',
+      path: '/:channel',
       name: 'account',
       component: AccountView,
-      beforeEnter: (to, from) => {
-        const store = useUserStore();
-        if (!store.username) {
-          router.push({ name: 'login' })
-        }
-      }
+      props: route => ({ channel: route.params.channel })
     },
     {
       path: '/video/:id',
