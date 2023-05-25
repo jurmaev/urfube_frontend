@@ -1,6 +1,5 @@
 <script>
-import { useFetch } from '../assets/fetch.js';
-import { RouterLink, RouterView } from 'vue-router';
+import { RouterLink } from 'vue-router';
 import { formatDate, formatViews } from '../assets/formatters.js';
 import Spinner from '../components/Spinner.vue';
 export default {
@@ -25,7 +24,7 @@ export default {
                         name: 'video', params: { id: video.id }, query: { timestamp: video.timestamp }
                     }">
                         <img :src="video.image_link" class="card-img-top">
-                        <div v-if="video.progress" class="progress" role="progressbar"  style="height: 3px">
+                        <div v-if="video.progress" class="progress" role="progressbar" style="height: 3px">
                             <div class="progress-bar" :style="{ 'width': video.progress * 100 + '%' }"></div>
                         </div>
                         <div class="d-flex card-body">

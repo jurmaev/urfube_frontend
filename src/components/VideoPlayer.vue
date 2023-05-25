@@ -9,7 +9,6 @@
 <script>
 import videojs from 'video.js';
 import { useFetch } from '../assets/fetch';
-import { integer } from '@vuelidate/validators';
 import { useUserStore } from '../store/user';
 
 export default {

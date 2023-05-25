@@ -3,7 +3,6 @@ import { RouterLink } from 'vue-router';
 import { removeTokens } from '../assets/tokens';
 import { mapStores } from 'pinia';
 import { useUserStore } from '../store/user';
-// import Sidebar from './components/Sidebar.vue';
 import Sidebar from './Sidebar.vue';
 
 export default {
@@ -21,7 +20,7 @@ export default {
             this.userStore.logoutUser();
             this.$router.push({ name: "main" });
         },
-        toggleSidebar(){
+        toggleSidebar() {
             this.sidebar = !this.sidebar;
         }
     },
@@ -40,7 +39,6 @@ export default {
                             d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
                     </svg>
                 </button>
-
                 <RouterLink class="navbar-brand" :to="{ name: 'main' }">Urfube</RouterLink>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -54,7 +52,8 @@ export default {
                 <ul class="navbar-nav mb-2 mb-lg-0">
                     <template v-if="userStore.username">
                         <li class="nav-item">
-                            <RouterLink class="nav-link" :to="{ name: 'account', params: { channel: userStore.username } }">{{ userStore.username }}</RouterLink>
+                            <RouterLink class="nav-link" :to="{ name: 'account', params: { channel: userStore.username } }">
+                                {{ userStore.username }}</RouterLink>
                         </li>
                         <li @click="logout" class="nav-item">
                             <RouterLink class="nav-link" :to="{ name: 'main' }">Logout</RouterLink>
@@ -75,14 +74,15 @@ export default {
     <Sidebar :active="sidebar" />
 </template>
 <style scoped>
-.bi-list{
+.bi-list {
     transition: fill 0.3s ease-in-out;
 }
+
 .sidebar__toggle:hover .bi-list {
     fill: white;
 }
 
-.sidebar__toggle{
+.sidebar__toggle {
     background-color: transparent;
     border: none;
 }

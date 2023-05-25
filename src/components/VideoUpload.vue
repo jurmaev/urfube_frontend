@@ -1,7 +1,7 @@
 <script>
 import useValidate from '@vuelidate/core';
 import { required, minLength } from '@vuelidate/validators';
-import { useFetch, refreshTokens } from '../assets/fetch';
+import { refreshTokens } from '../assets/fetch';
 import { getAccessToken, getAccessTokenExpirationTime } from '../assets/tokens';
 export default {
     data() {
@@ -47,6 +47,9 @@ export default {
                     video_title: this.title,
                     video_description: this.description,
                 }));
+                const accessTokenExpirationTime = Date.parse(getAccessTokenExpirationTime());
+                if (new Date() > accessTokenExpirationTime)
+                    await refreshTokens();
                 request.setRequestHeader('User-Auth-Token', getAccessToken())
                 request.send(formData);
             }

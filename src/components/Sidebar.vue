@@ -7,27 +7,33 @@ export default {
     },
     props: ['active'],
     methods: {
-        closeSidebar(e){
+        closeSidebar(e) {
             const sidebar = document.querySelector('.sidenav');
             sidebar.classList.remove('active');
-            // const links = document.querySelectorAll('.nav-link.text-white');
-            // links.forEach(link => link.classList.remove('active'))
-            // e.target.classList.add('active');
         }
     },
-    mounted(){
+    mounted() {
         const links = document.querySelectorAll('.nav-link.text-white');
-        // if (this.$router.currentRoute.value.path === '/') links[0].classList.add('active');
     }
 }
 </script>
 <template>
-    <div class="d-flex flex-column flex-shrink-0 text-bg-dark sidenav" :class="{active: active}">
+    <div class="d-flex flex-column flex-shrink-0 text-bg-dark sidenav" :class="{ active: active }">
         <ul class="nav nav-pills flex-column mb-auto">
-            <li class="nav-item"><RouterLink @click="closeSidebar" class="nav-link text-white" :to="{ name: 'main' }">Home</RouterLink></li>
-            <li class="nav-item"><RouterLink @click="closeSidebar" class="nav-link text-white" :to="{ name: 'history' }">History</RouterLink></li>
-            <li class="nav-item"><RouterLink @click="closeSidebar" class="nav-link text-white" :to="{ name: 'liked_videos' }">Liked videos</RouterLink></li>
-            <li class="nav-item"><RouterLink @click="closeSidebar" class="nav-link text-white" :to="{ name: 'subscriptions' }">Subscriptions</RouterLink></li>
+            <li class="nav-item">
+                <RouterLink @click="closeSidebar" class="nav-link text-white" :to="{ name: 'main' }">Home</RouterLink>
+            </li>
+            <li class="nav-item">
+                <RouterLink @click="closeSidebar" class="nav-link text-white" :to="{ name: 'history' }">History</RouterLink>
+            </li>
+            <li class="nav-item">
+                <RouterLink @click="closeSidebar" class="nav-link text-white" :to="{ name: 'liked_videos' }">Liked videos
+                </RouterLink>
+            </li>
+            <li class="nav-item">
+                <RouterLink @click="closeSidebar" class="nav-link text-white" :to="{ name: 'subscriptions' }">Subscriptions
+                </RouterLink>
+            </li>
         </ul>
     </div>
 </template>
@@ -45,17 +51,16 @@ export default {
     transition: 0.5s;
 }
 
-.nav-item{
+.nav-item {
     border-radius: 5px;
     transition: background-color 0.3s ease-in-out;
 }
 
-.nav-item:hover{
+.nav-item:hover {
     background-color: grey;
 }
 
-.sidenav.active{
+.sidenav.active {
     width: 250px;
     padding: 16px;
-}
-</style>
+}</style>
