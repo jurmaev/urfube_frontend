@@ -3,6 +3,7 @@ import useValidate from '@vuelidate/core';
 import { required, minLength } from '@vuelidate/validators';
 import { refreshTokens } from '../assets/fetch';
 import { getAccessToken, getAccessTokenExpirationTime } from '../assets/tokens';
+import { BACKEND_BASE_DOMAIN } from '../main';
 export default {
     data() {
         return {
@@ -43,7 +44,7 @@ export default {
                     console.log(request.responseText)
                 }
 
-                request.open('post', 'http://127.0.0.1:5000/upload_video/?' + new URLSearchParams({
+                request.open('post', `${BACKEND_BASE_DOMAIN}/upload_video/?` + new URLSearchParams({
                     video_title: this.title,
                     video_description: this.description,
                 }));

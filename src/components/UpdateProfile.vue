@@ -3,6 +3,7 @@ import useValidate from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
 import { refreshTokens } from '../assets/fetch';
 import { getAccessToken, getAccessTokenExpirationTime } from '../assets/tokens';
+import { BACKEND_BASE_DOMAIN } from '../main';
 export default {
     data() {
         return {
@@ -19,7 +20,7 @@ export default {
                 const formData = new FormData();
                 formData.append('image_file', imageUpload, 'image_file');
                 if (new Date() > new Date(getAccessTokenExpirationTime())) await refreshTokens();
-                const response = await fetch('http://127.0.0.1:5000/upload_profile_pic/', {
+                const response = await fetch(`${BACKEND_BASE_DOMAIN}/upload_profile_pic/`, {
                     method: 'POST',
                     body: formData,
                     headers: { 'User-Auth-Token': getAccessToken() }

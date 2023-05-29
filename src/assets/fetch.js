@@ -1,5 +1,5 @@
 import { getAccessToken, getAccessTokenExpirationTime, getRefreshToken, saveTokens } from "./tokens";
-
+import { BACKEND_BASE_DOMAIN } from "../main";
 export async function useFetch(method, data, useToken) {
     const headers = {};
     headers['Content-Type'] = 'application/json';
@@ -9,7 +9,7 @@ export async function useFetch(method, data, useToken) {
             await refreshTokens();
         headers['User-Auth-Token'] = getAccessToken();
     };
-    const response = await fetch('http://127.0.0.1:5000/api', {
+    const response = await fetch(`${BACKEND_BASE_DOMAIN}/api`, {
         method: 'POST',
         headers: headers,
         body: JSON.stringify({
@@ -23,7 +23,7 @@ export async function useFetch(method, data, useToken) {
 };
 
 export async function refreshTokens() {
-    const response = await fetch('http://127.0.0.1:5000/api', {
+    const response = await fetch(`${BACKEND_BASE_DOMAIN}/api`, {
         method: 'POST',
         body: JSON.stringify({
             jsonrpc: '2.0',
