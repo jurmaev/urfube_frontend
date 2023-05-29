@@ -12,4 +12,4 @@ app.use(router)
 app.use(store)
 app.mount('#app')
 
-export const BACKEND_BASE_DOMAIN='http://127.0.0.1:5000';
+export const BACKEND_BASE_DOMAIN='https://urfubebackend-production.up.railway.app';
