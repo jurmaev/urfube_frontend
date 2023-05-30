@@ -1,16 +1,17 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { useUserStore } from '../store/user';
-const MainView = () => import('../views/MainView.vue');
-const LoginView = () => import('../views/LoginView.vue');
-const RegisterView = () => import('../views/RegisterView.vue');
-const AccountView = () => import('../views/AccountView.vue');
-const VideoView = () => import('../views/VideoView.vue');
-const HistoryView = () => import('../views/HistoryView.vue');
-const LikedVideosView = () => import('../views/LikedVideosView.vue');
-const SubscriptionsView = () => import('../views/SubscriptionsView.vue');
+import { useUserStore } from '@/store/user';
+import MainView from '@/views/MainView.vue';
+import LoginView from '@/views/LoginView.vue';
+import RegisterView from '@/views/RegisterView.vue';
+import AccountView from '@/views/AccountView.vue';
+import VideoView from '@/views/VideoView.vue';
+import HistoryView from '@/views/HistoryView.vue';
+import LikedVideosView from '@/views/LikedVideosView.vue';
+import SubscriptionsView from '@/views/SubscriptionsView.vue';
+
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(),
   routes: [
     {
       path: '/',
