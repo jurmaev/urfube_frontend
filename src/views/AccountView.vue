@@ -86,15 +86,15 @@ export default {
         </div>
         <ul v-if="channel === userStore.username" class="nav nav-underline justify-content-center" data-bs-theme="dark">
             <li class="nav-item">
-                <a class="nav-link text-secondary" :class="view === 'videos' ? 'active' : ''" @click="changeView" href="#"
+                <a class="nav-link text-secondary" :class="view === 'videos' ? 'active' : ''" @click.prevent="changeView" href=""
                     id="videos">Videos</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-secondary" :class="view === 'upload' ? 'active' : ''" @click="changeView" href="#"
+                <a class="nav-link text-secondary" :class="view === 'upload' ? 'active' : ''" @click.prevent="changeView" href=""
                     id="upload">Upload Video</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-secondary" :class="view === 'update' ? 'active' : ''" @click="changeView" href="#"
+                <a class="nav-link text-secondary" :class="view === 'update' ? 'active' : ''" @click.prevent="changeView" href=""
                     id="update">Update profile picture</a>
             </li>
         </ul>

@@ -1,24 +1,22 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
 import HeaderComponent from '../src/components/HeaderComponent.vue'
 
 </script>
-<!-- <script>
+<script>
 export default {
   data() {
-
+    return {}
   },
   methods: {
   }
 }
-</script> -->
+</script>
 <template>
   <HeaderComponent />
-  <!-- <Sidebar /> -->
   <main style="margin-top: 65px;">
     <RouterView />
   </main>
-  
 </template>
 
 <style scoped></style>

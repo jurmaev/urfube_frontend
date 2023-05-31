@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router';
 import { useUserStore } from '@/store/user';
 import MainView from '@/views/MainView.vue';
 import LoginView from '@/views/LoginView.vue';
@@ -11,7 +11,7 @@ import SubscriptionsView from '@/views/SubscriptionsView.vue';
 
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes: [
     {
       path: '/',
