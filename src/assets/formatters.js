@@ -1,6 +1,6 @@
 export function formatDate(date) {
     date = new Date(date);
-    const diff = (new Date() - date) / 1000;
+    const diff = (new Date() - date) / 1000 + date.getTimezoneOffset() * 60;
     const hours = 3600;
     const days = hours * 24;
     const weeks = days * 7;
