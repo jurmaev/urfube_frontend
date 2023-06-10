@@ -18,7 +18,7 @@ export default {
     <Spinner v-if="!videos" />
     <div v-else class="container p-4">
         <div class="row row-cols-3 g-4">
-            <div class="col" v-for="video in videos" :key="video.id">
+            <div class="col" v-for="video in videos.slice().reverse()" :key="video.id">
                 <div class="card card__link bg-dark border-secondary">
                     <RouterLink :to="{
                         name: 'video', params: { id: video.id }, query: { timestamp: video.timestamp }
