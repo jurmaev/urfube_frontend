@@ -26,7 +26,7 @@ export default {
                     headers: { 'User-Auth-Token': getAccessToken() }
                 });
                 if (!('error' in response)) {
-                    this.$router.push({ name: 'main' })
+                    location.reload();
                 }
                 else {
                     console.log(response['error'])

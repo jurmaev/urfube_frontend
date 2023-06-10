@@ -12,7 +12,6 @@ export default {
         async getVideos() {
             const response = await useFetch('get_videos', {})
             this.videos = response.result;
-            console.log(response.result)
         }, formatDate, formatViews
     },
     mounted() {
